@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Initialing Jira status transition")
+	fmt.Println("Initializing Jira status transition")
 
 	err := jira.StartTransition()
 	if err != nil {

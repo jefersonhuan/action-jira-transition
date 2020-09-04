@@ -19,6 +19,8 @@ func StartTransition() (err error) {
 		panic(fmt.Errorf("An error ocurred while fetching variables: %+v\n", err))
 	}
 
+	fmt.Println("Starting transition of Issue", params.IssueKey)
+
 	err, transitions := fetchTransitions(params.IssueKey)
 	if err != nil {
 		return
