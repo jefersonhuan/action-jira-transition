@@ -6,7 +6,7 @@ WORKDIR ${GOPATH}/src/github.com/jefersonhuan/action-jira-transition
 COPY . .
 
 RUN go mod download
-RUN go build ./...
+RUN go build main.go
 
 FROM builder
 

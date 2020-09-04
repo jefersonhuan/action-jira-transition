@@ -1,4 +1,4 @@
-package main
+package jira
 
 import (
 	"encoding/base64"
@@ -22,7 +22,7 @@ type Transition struct {
 	Name string `json:"name"`
 }
 
-func fillTag(s reflect.Type, env string) (error, int) {
+func findTag(s reflect.Type, env string) (error, int) {
 	for i := 0; i < s.NumField(); i++ {
 		field := s.Field(i)
 
@@ -33,12 +33,12 @@ func fillTag(s reflect.Type, env string) (error, int) {
 		return nil, i
 	}
 
-	return fmt.Errorf("couldn't fill tag for %s", env), 0
+	return fmt.Errorf("couldn't find tag for %s", env), 0
 }
 
-func (params *Params) Load() (err error) {
-	v := reflect.ValueOf(params).Elem()
-	s := reflect.TypeOf(*params)
+func loadParams() (err error) {
+	v := reflect.ValueOf(&params).Elem()
+	s := reflect.TypeOf(params)
 
 	envs := []string{
 		"ISSUE_KEY",
@@ -54,7 +54,7 @@ func (params *Params) Load() (err error) {
 			return fmt.Errorf("variable %s is required", e)
 		}
 
-		err, index := fillTag(s, e)
+		err, index := findTag(s, e)
 		if err != nil {
 			return err
 		}
@@ -68,7 +68,9 @@ func (params *Params) Load() (err error) {
 	re := regexp.MustCompile(`(\w{3}-\d+)`)
 	issueKey := re.Find([]byte(params.IssueKey))
 
-	params.IssueKey = string(issueKey)
+	if issueKey != nil {
+		params.IssueKey = string(issueKey)
+	}
 
 	return
 }
