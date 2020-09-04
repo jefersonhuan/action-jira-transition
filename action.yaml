@@ -1,0 +1,28 @@
+name: 'Jira Transition'
+description: 'This action move a Jira Issue to a given Transition'
+author: 'jefersonhuan'
+inputs:
+  transition:
+    description: "Transition's name"
+    required: true
+  issueKey:
+    description: "Issue key"
+    required: true
+  jiraBaseUrl:
+    description: "Jira Cloud Base URL"
+    required: true
+  jiraUserEmail:
+    description: "User's e-mail"
+    required: true
+  jiraAPiKey:
+    description: "Jira's API Key"
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    ISSUE_KEY: ${{ inputs.issueKey }}
+    TRANSITION: ${{ inputs.transition }}
+    JIRA_API_KEY: ${{ inputs.jiraAPiKey }}
+    JIRA_BASE_URL: ${{ inputs.jiraBaseUrl }}
+    JIRA_USER_EMAIL: ${{ inputs.jiraUserEmail }}
